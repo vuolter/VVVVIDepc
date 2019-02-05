@@ -1,95 +1,121 @@
 // Copyright © 2019 Walter Purcaro <vuolter@gmail.com>
 //
 // ==UserScript==
-// @name        VVVVID Enhanced Player Controls
+// @name        VVVVIDepc
 // @namespace   https://github.com/vuolter/VVVVIDepc
 // @match       *://www.vvvvid.it/*
-// @version     1.0.0
+// @version     2.0.0
 // @author      Walter Purcaro
-// @description Add hotkeys support and reduce info on screen while playing. Available hotkeys: "Space" to play/pause video playback, "Arrow Left" to rewind video (keep pressed to increase speed), "Arrow Right" to fast-forward video (keep pressed to increase speed), "Arrow Up" to increase audio volume, "Arrow Down" to reduce audio volume. Press any button to show the playback controls.
+// @description Enhanced Player Controls for vvvvid.it
 // @run-at      document-idle
 // @grant       none
 // ==/UserScript==
 
 'use strict';
 
+
 // *** SETTINGS SECTION START ***
 
+// hotkeys (don't support application, system and function keys)
+var PAUSE_KEY = "Space";
+var REW_KEY = "ArrowLeft";
+var FF_KEY = "ArrowRight";
+var VOLUP_KEY = "ArrowUp";
+var VOLDOWN_KEY = "ArrowDown";
+// var SHARE_KEY = "s";  // NOTE: disabled because breaks texting
+var WATCHLATER_KEY = "a";
+var PREV_KEY = "b";
+var NEXT_KEY = "n";
+var MUTE_KEY = "m";
+var RATE_KEY = "Enter";
+var PLAYLIST_KEY = "p";
+var FULLSCREEN_KEY = "f";
+var TITLE_KEY = "t";
+
 var SHOW_TITLE = true;  // shows video title within player controls
+var SHOW_ACTIONS = false;  // shows video actions within player controls
+
 var VOLUME_INCREMENT = 0.1;  // range 0-1, decimals
+
 var MIN_POSITION_INCREMENT = 10;  // in seconds
 var MAX_POSITION_INCREMENT = 120;  // in seconds
 var POSITION_INCREMENT_MULTIPLIER = 1.03;  // range 1-?
 
 // *** SETTINGS SECTION END ***
 
-var _playerInfoContainerOpaque;
-var _menuBottomOpaque;
-var _playerControlsOpaque;
-var _channelsContainer;
-var _playlistBtn;
 
-var _playerVideoInfo;
-var _navbar;
-
-var _playerControlsOpaque_top;
-
-var _initFlag = false;
+var _uiMod = false;
 var _timedDelay = 2000;
 var _timedId;
 var _posInc;
 
-// function isFullscreen() { return 1 >= outerHeight - innerHeight; }
-
-// fix fullscreen UI bug
-// document.addEventListener("fullscreenChange", function() {
-  // if (isFullscreen() && !_player.getInFullscreen())
-    // player.setFullscreen()
-// });
-
-function _init() {
-  _playerInfoContainerOpaque = document.getElementsByClassName('player-info-container-opaque')[0];
-  _menuBottomOpaque = document.getElementsByClassName('menu-bottom-opaque')[0];
-  _playerControlsOpaque = document.getElementsByClassName("playerControls-opaque")[0];
-  _channelsContainer = document.getElementById('channelsContainer');
-  _playlistBtn = document.getElementsByClassName('pull-right')[0];
-
-  _playerVideoInfo = document.getElementById('player-video-info');
-  _navbar = document.getElementsByClassName('navbar navbar-bottom hide hide-out')[0];
-
-  _playerControlsOpaque_top = getComputedStyle(document.querySelector('.playerControls-opaque')).top;
+function _changeUI(visibility, height) {
+  $('.player-info-container-opaque').css("visibility", visibility);
+  $('.menu-bottom-opaque').css("visibility", visibility);
+  $('.playerControls-opaque').css("height", height);
+  $('#channelsContainer').css("visibility", visibility);
+  $('.pull-right').css("visibility", visibility);
 }
 
-function _changeUI(visibility, top) {
-  _playerInfoContainerOpaque.style.visibility = visibility;
-  _menuBottomOpaque.style.visibility = visibility;
-  _playerControlsOpaque.style.top = top;
-  _channelsContainer.style.visibility = visibility;
-  _playlistBtn.style.visibility = visibility;
+function _displayElement(element, visible) {
+  if (visible)
+    $(element).addClass("active").removeClass("inactive");
+  else
+    $(element).addClass("inactive").removeClass("active");
 }
 
-function _toggleUI(status) {
-  if (SHOW_TITLE)
-    _playerVideoInfo.className = "player-info hide " + status;
-  _navbar.className = "navbar navbar-bottom hide hide-out " + status;
+function _displayTitle(visible) {
+  _displayElement('#player-video-info', visible);
 }
+
+function _displayNavbar(visible) {
+  _displayElement('.navbar-bottom', visible);
+}
+
+function _displayActions(visible) {
+  _displayElement('#player-video-actions', visible);
+}
+
+// NOTE: not working, depends just on _displayNavbar :(
+function _displayPlayerControls(visible) {
+  _displayElement('#playerControls', visible);
+}
+
+function _displayUI(title, player, actions) {
+    _displayTitle(title);
+    _displayPlayerControls(player);
+    _displayActions(actions);
+    _displayNavbar(player || actions);
+}
+
 
 function customizeUI() {
-  var half_top = parseFloat(_playerControlsOpaque_top) / 2 + 'px';
-  _changeUI("hidden", half_top);
+  var pco_height = $('.playerControls-opaque').css("height");
+  var mbo_height = $('.menu-bottom-opaque').css("height");
+  var height = parseFloat(pco_height) + parseFloat(mbo_height);
+  _changeUI("hidden", height);
+  _uiMod = true;
 }
 
 function restoreUI() {
-  _changeUI("visible", _playerControlsOpaque_top);
+  _changeUI("visible", "");
+  _uiMod = false;
 }
 
-function showUI() {
-  customizeUI();
-  _toggleUI("active");
+function showUI(title, player, actions) {
+  if (!_uiMod)
+    customizeUI();
+
+  if (player) {
+    title = SHOW_TITLE;
+    actions = SHOW_ACTIONS;
+  }
+
+  _displayUI(title, player, actions);
 }
 
 function hideUI() {
-  _toggleUI("inactive");
+  _displayUI(false, false, false);
 }
 
 function getPosInc() {
@@ -97,66 +123,145 @@ function getPosInc() {
   return _posInc;
 }
 
-function clearPosInc() {
+function resetPosInc() {
   _posInc = MIN_POSITION_INCREMENT;
   return _posInc;
 }
 
-document.addEventListener('mousemove', function(event) {
+
+function restoreUIHandler(event) {
   clearTimeout(_timedId);
-  restoreUI();
-});
+  if (_uiMod)
+    restoreUI();
+}
 
-document.addEventListener('keyup', function(event) {
-  showUI();
+function hideUIHandler(event) {
   _timedId = setTimeout(hideUI, _timedDelay);
-});
+}
 
-document.addEventListener('keydown', function(event) {
-  if (!_initFlag) {
-    _init();
-    _initFlag = true;
-  }
+function actionHandler(event) {
+  console.log("Keydown key: " + event.key);
+  console.log("Keydown repeat: " + event.repeat);
 
+  // skip if application or system key
   if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)
     return;
 
-  // console.log(event.code);
-  // console.log(event.repeat);
+  // skip if function key
+  if (event.key.match(/F\d{1,2}/))
+    return;
 
-  if (!event.repeat) {
+  var key = event.key == " " ? "Space" : event.key;  // convert " " to "Space"
+  var longPress = event.repeat;
+
+  var showTitle = false;
+  var showPlayer = false;
+  var showActions = false;
+
+  var p = window.vvvvid.playerObj;
+
+  switch (key) {
+
+    case PAUSE_KEY:
+      if (!longPress) {
+        p.player.setPlayPause();
+        showPlayer = true;
+      }
+      break;
+
+    case TITLE_KEY:
+      if (!longPress)
+        showTitle = true;
+      break;
+
+    case PREV_KEY:
+      if (!longPress)
+        p.movePrev();
+      break;
+
+    case NEXT_KEY:
+      if (!longPress)
+        p.moveNext();
+      break;
+
+    case MUTE_KEY:
+      if (!longPress) {
+        $(p.player.getVolume() ? ".ppmute" : ".ppunmute").trigger("click");
+        showPlayer = true;
+      }
+      break;
+
+    case RATE_KEY:
+      if (!longPress) {
+        $(".player-action-rate-image").trigger("click");
+        showActions = true;
+      }
+      break;
+
+    case WATCHLATER_KEY:
+      if (!longPress) {
+        $(".player-action-addwtl-image").trigger("click");
+        showActions = true;
+      }
+      break;
+
+    // case SHARE_KEY:
+      // if (!longPress) {
+        // $(".player-action-share-image").trigger("click");
+        // showActions = true;
+      // }
+      // break;
+
+    case PLAYLIST_KEY:
+      if (!longPress) {
+        $(".playlist-btn").trigger("click");
+        showPlayer = true;
+      }
+      break;
+
+    case FULLSCREEN_KEY:
+      if (!longPress)
+        p.player.setFullscreen();
+      break;
+
+    case REW_KEY:
+      var pos = p.player.getPosition();
+      var inc = longPress ? getPosInc() : resetPosInc();
+      p.player.setSeek(pos - inc);
+      showPlayer = true;
+      break;
+
+    case FF_KEY:
+      var pos = p.player.getPosition();
+      var inc = longPress ? getPosInc() : resetPosInc();
+      p.player.setSeek(pos + inc);
+      showPlayer = true;
+      break;
+
+    case VOLUP_KEY:
+      var vol = Math.min(100, p.player.getVolume() + VOLUME_INCREMENT);
+      p.player.setVolume(vol);
+      showPlayer = true;
+      break;
+
+    case VOLDOWN_KEY:
+      var vol = Math.max(0.001, p.player.getVolume() - VOLUME_INCREMENT);  // NOTE: if volume is set to 0 ui shows wrong value
+      p.player.setVolume(vol);
+      if (vol == 0.001)
+        $(".ppmute").trigger("click");
+      showPlayer = true;
+      break;
+
+    default:
+      showPlayer = true;
+  }
+
+  if (!longPress) {
     clearTimeout(_timedId);
-    showUI();
+    showUI(showTitle, showPlayer, showActions);
   }
+}
 
-  var player = window.vvvvid.player;
-
-  switch (event.code) {
-    case "Space":
-      if (!event.repeat)
-        player.setPlayPause();
-      break;
-
-    case "ArrowLeft":
-      var pos = player.getPosition();
-      var inc = event.repeat ? getPosInc() : clearPosInc();
-      player.setSeek(pos - inc);
-      break;
-
-    case "ArrowUp":
-      var vol = Math.min(100, player.getVolume() + VOLUME_INCREMENT);
-      player.setVolume(vol);
-      break;
-
-    case "ArrowRight":
-      var pos = player.getPosition();
-      var inc = event.repeat ? getPosInc() : clearPosInc();
-      player.setSeek(pos + inc);
-      break;
-
-    case "ArrowDown":
-      var vol = Math.max(0.001, player.getVolume() - VOLUME_INCREMENT);  // NOTE: if volume is set to 0 UI shows wrong value
-      player.setVolume(vol);
-      break;
-  }
-});
+document.addEventListener('mousemove', restoreUIHandler);
+document.addEventListener('keyup', hideUIHandler);
+document.addEventListener('keydown', actionHandler);
