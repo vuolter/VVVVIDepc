@@ -1,12 +1,14 @@
-// Copyright © 2019 Walter Purcaro <vuolter@gmail.com>
-//
 // ==UserScript==
 // @name        VVVVIDepc
 // @namespace   https://github.com/vuolter/VVVVIDepc
 // @match       *://www.vvvvid.it/*
-// @version     2.0.0
+// @version     2.0.1
 // @author      Walter Purcaro
+// @copyright   2019, Walter Purcaro (https://vuolter.com)
 // @description Enhanced Player Controls for vvvvid.it
+// @license     ISC
+// @homepageURL https://github.com/vuolter/VVVVIDepc
+// @supportURL  https://github.com/vuolter/VVVVIDepc/issues
 // @run-at      document-idle
 // @grant       none
 // ==/UserScript==
