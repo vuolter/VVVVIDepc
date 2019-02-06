@@ -1,16 +1,19 @@
 // ==UserScript==
-// @name        VVVVIDepc
-// @namespace   https://github.com/vuolter/VVVVIDepc
-// @match       *://www.vvvvid.it/*
-// @version     2.0.1
-// @author      Walter Purcaro
-// @copyright   2019, Walter Purcaro (https://vuolter.com)
-// @description Enhanced Player Controls for vvvvid.it
-// @license     ISC
-// @homepageURL https://github.com/vuolter/VVVVIDepc
-// @supportURL  https://github.com/vuolter/VVVVIDepc/issues
-// @run-at      document-idle
-// @grant       none
+// @name            VVVVIDepc - Enhanced Player Controls for vvvvid.it
+// @name:it         VVVVIDepc - Migliora il player video di vvvvid.it
+// @namespace       https://github.com/vuolter/VVVVIDepc
+// @match           *://www.vvvvid.it/*
+// @version         2.0.2
+// @author          Walter Purcaro
+// @copyright       2019, Walter Purcaro (https://vuolter.com)
+// @description     Add hotkeys support and drastically improve playback UI
+// @description:it  Aggiunge diversi tasti di scelta rapida e migliora l'aspetto dell'interfaccia utente
+// @license         ISC
+// @homepageURL     https://github.com/vuolter/VVVVIDepc
+// @downloadURL     https://github.com/vuolter/VVVVIDepc/raw/master/VVVVIDepc.user.js
+// @supportURL      https://github.com/vuolter/VVVVIDepc/issues
+// @run-at          document-idle
+// @grant           none
 // ==/UserScript==
 
 'use strict';
@@ -18,7 +21,7 @@
 
 // *** SETTINGS SECTION START ***
 
-// hotkeys (don't support application, system and function keys)
+// hotkeys (does not support application, system and function keys)
 var PAUSE_KEY = "Space";
 var REW_KEY = "ArrowLeft";
 var FF_KEY = "ArrowRight";
