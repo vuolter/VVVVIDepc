@@ -4,9 +4,30 @@ VVVVIDepc
 #### Enhanced Player Controls for vvvvid.it
 
 If you're looking for something more *minimal* or you're still in love with your keyboard,
-this userscript is for you too!
+this script is for you too!
 
 No ads skippers here, but... also no compatibility issues with them. Peace.
+
+
+Installation
+------------
+
+> **Note:**
+> Install a script-manager addon for your browser to use this script within.
+> Recommended script-managers:
+> [Violentmonkey for Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag),
+> [Violentmonkey for Firefox](https://addons.mozilla.org/firefox/addon/violentmonkey),
+> [Tampermonkey for Safari](https://safari-extensions.apple.com/details/?id=net.tampermonkey.safari-G3XV72R5TC),
+> [Tampermonkey for Edge](https://www.microsoft.com/store/apps/9NBLGGH5162S).
+
+Get it from the most popular user-script collector sites:
+
+- https://openuserjs.org/scripts/vuolter/VVVVIDepc
+- https://greasyfork.org/en/scripts/377451-vvvvidepc
+
+Or install directly from source:
+
+- https://github.com/vuolter/VVVVIDepc/raw/master/VVVVIDepc.user.js
 
 
 Features
