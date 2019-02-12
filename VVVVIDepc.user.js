@@ -21,7 +21,7 @@
 
 // *** SETTINGS SECTION START ***
 
-// hotkeys (does not support application, system and function keys)
+// hotkeys (application, system and function keys are not supported)
 var PAUSE_KEY = "Space";
 var REW_KEY = "ArrowLeft";
 var FF_KEY = "ArrowRight";
@@ -86,11 +86,11 @@ function _displayPlayerControls(visible) {
   _displayElement('#playerControls', visible);
 }
 
-function _displayUI(title, player, actions) {
-    _displayTitle(title);
-    _displayPlayerControls(player);
-    _displayActions(actions);
-    _displayNavbar(player || actions);
+function _displayUI(showTitle, showPlayer, showActions) {
+  _displayTitle(showTitle);
+  _displayPlayerControls(showPlayer);
+  _displayActions(showActions);
+  _displayNavbar(showPlayer || showActions);
 }
 
 
@@ -107,16 +107,16 @@ function restoreUI() {
   _uiMod = false;
 }
 
-function showUI(title, player, actions) {
+function showUI(showTitle, showPlayer, showActions) {
   if (!_uiMod)
     customizeUI();
 
-  if (player) {
-    title = SHOW_TITLE;
-    actions = SHOW_ACTIONS;
+  if (showPlayer) {
+    showTitle = SHOW_TITLE;
+    showActions = SHOW_ACTIONS;
   }
 
-  _displayUI(title, player, actions);
+  _displayUI(showTitle, showPlayer, showActions);
 }
 
 function hideUI() {
@@ -145,8 +145,8 @@ function hideUIHandler(event) {
 }
 
 function actionHandler(event) {
-  console.log("Keydown key: " + event.key);
-  console.log("Keydown repeat: " + event.repeat);
+  // console.log("Keydown key: " + event.key);
+  // console.log("Keydown repeat: " + event.repeat);
 
   // skip if application or system key
   if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)

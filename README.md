@@ -6,7 +6,7 @@ VVVVIDepc
 If you're looking for something more *minimal* or you're still in love with your keyboard,
 this script is for you too!
 
-No ads skippers here, but... also no compatibility issues with them. Peace.
+No ads skippers here, but... also no compatibility harm with them. Peace.
 
 
 Installation
@@ -16,14 +16,14 @@ Installation
 > Install a script-manager addon for your browser to use this script within.
 > Recommended script-managers: [Violentmonkey for Chrome](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag), [Violentmonkey for Firefox](https://addons.mozilla.org/firefox/addon/violentmonkey), [Tampermonkey for Safari](https://safari-extensions.apple.com/details/?id=net.tampermonkey.safari-G3XV72R5TC), [Tampermonkey for Edge](https://www.microsoft.com/store/apps/9NBLGGH5162S).
 
-Get it from the most popular user-script collector sites:
+Get **VVVVIDepc** from the most popular user-script collector websites:
 
-- https://openuserjs.org/scripts/vuolter/VVVVIDepc_-_Enhanced_Player_Controls_for_vvvvid.it
-- https://greasyfork.org/en/scripts/377451
+- [*from* openuserjs.org](https://openuserjs.org/scripts/vuolter/VVVVIDepc_-_Enhanced_Player_Controls_for_vvvvid.it)
+- [*from* greasyfork.org](https://greasyfork.org/en/scripts/377451)
 
 Or install directly from source:
 
-- https://github.com/vuolter/VVVVIDepc/raw/master/VVVVIDepc.user.js
+- [VVVVIDepc.user.js](https://github.com/vuolter/VVVVIDepc/raw/master/VVVVIDepc.user.js)
 
 
 Features
@@ -78,24 +78,24 @@ Values of name of keys to use as hotkeys (Strings):
 > Application, system and function key names are not supported
 > (e.g. `Escape`, `F11`, `Tab`, `Alt`, etc.).
 
-Show/hide video title within player controls (Boolean, default to true):
+Show/hide video title within player controls (Boolean, default to `true`):
 
     var SHOW_TITLE = true;
 
-Show/hide video actions within player controls (Boolean, default to false):
+Show/hide video actions within player controls (Boolean, default to `false`):
 
     var SHOW_ACTIONS = false;
 
-Value of gain to add/subtract to current volume when key is pressed (Number, range 0 to 1):
+Value of gain to add/subtract to current volume when key is pressed (Number, range `0` to `1`):
 
     var VOLUME_INCREMENT = 0.1;
 
-Min/max seconds of time to add/subtract to the current playback position when key is pressed (Numbers, greater than 0):
+Min/max seconds of time to add/subtract to the current playback position when key is pressed (Numbers, greater than `0`):
 
     var MIN_POSITION_INCREMENT = 10;
     var MAX_POSITION_INCREMENT = 120;
 
-Value to multiply with seconds of time to add/subtract when key is pressed (Number, greater than 1):
+Value to multiply with seconds of time to add/subtract when key is pressed (Number, greater than `1`):
 
     var POSITION_INCREMENT_MULTIPLIER = 1.03;
 
