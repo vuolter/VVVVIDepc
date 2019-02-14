@@ -6,7 +6,7 @@ VVVVIDepc
 If you're looking for something more *minimal* or you're still in love with your keyboard,
 this script is for you too!
 
-No ads skippers here, but... also no compatibility harm with them. Peace.
+No ads skippers here, but... also no compatibility issue with them. Peace.
 
 
 Installation
@@ -57,7 +57,7 @@ Press any other key to show the playback controls.
 Script Settings
 ---------------
 
-Values of name of keys to use as hotkeys (Strings):
+Values of key names to use as hotkeys (Strings):
 
     var PAUSE_KEY = "Space";
     var REW_KEY = "ArrowLeft";
@@ -74,7 +74,7 @@ Values of name of keys to use as hotkeys (Strings):
     var TITLE_KEY = "t";
 
 > **Note:**
-> Hotkey value is case-sensitive.
+> Key names are case-sensitive.
 > Application, system and function key names are not supported
 > (e.g. `Escape`, `F11`, `Tab`, `Alt`, etc.).
 

@@ -44,7 +44,7 @@ var VOLUME_INCREMENT = 0.1;  // range 0-1, decimals
 
 var MIN_POSITION_INCREMENT = 10;  // in seconds
 var MAX_POSITION_INCREMENT = 120;  // in seconds
-var POSITION_INCREMENT_MULTIPLIER = 1.03;  // range 1-?
+var POSITION_INCREMENT_MULTIPLIER = 1.03;  // range 1+
 
 // *** SETTINGS SECTION END ***
 
@@ -144,7 +144,7 @@ function hideUIHandler(event) {
   _timedId = setTimeout(hideUI, _timedDelay);
 }
 
-function actionHandler(event) {
+function hotkeyHandler(event) {
   // console.log("Keydown key: " + event.key);
   // console.log("Keydown repeat: " + event.repeat);
 
@@ -269,4 +269,4 @@ function actionHandler(event) {
 
 document.addEventListener('mousemove', restoreUIHandler);
 document.addEventListener('keyup', hideUIHandler);
-document.addEventListener('keydown', actionHandler);
+document.addEventListener('keydown', hotkeyHandler);
